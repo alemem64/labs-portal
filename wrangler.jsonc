@@ -1,0 +1,8 @@
+// Contract 01: assets-only. Worker 스크립트(main) 추가 금지.
+{
+  "name": "labs-portal",
+  "compatibility_date": "2026-07-13",
+  "assets": {
+    "directory": "./dist"
+  }
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="g" cx="65%" cy="25%" r="95%">
+      <stop offset="0%" stop-color="#7ab8ff"/>
+      <stop offset="55%" stop-color="#3a4fa0"/>
+      <stop offset="100%" stop-color="#0d0f24"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#g)"/>
+  <text x="50%" y="54%" text-anchor="middle" font-family="system-ui, sans-serif" font-size="120" font-weight="700" fill="rgba(255,255,255,0.92)">JZ</text>
+</svg>

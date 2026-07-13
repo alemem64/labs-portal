@@ -1,0 +1,72 @@
+/* Contract 03: 모든 시각 값의 단일 소스. 컴포넌트 CSS는 var()만 사용한다.
+   예외 2곳: ① 768px breakpoint (global.css @media, src/lib/viewport.ts)
+             ② index.html 인라인 critical CSS (이 파일 값의 복사본) */
+:root {
+  /* ── color ── */
+  --color-bg-base: #0a0710;                          /* 최하단 폴백 배경 */
+  --color-sunset-bottom: rgba(255, 61, 40, 0.55);    /* 역석양: 아래(붉음) */
+  --color-sunset-top: rgba(72, 160, 255, 0.35);      /* 역석양: 위(하늘) */
+  --color-card-bg: rgba(20, 14, 28, 0.55);
+  --color-card-bg-glow: rgba(64, 18, 24, 0.68);      /* glow 시 더 붉은 카드 배경 */
+  --color-card-border: rgba(255, 255, 255, 0.12);
+  --color-card-border-glow: rgba(255, 120, 100, 0.45);
+  --color-text-title: #f5f0ff;
+  --color-text-desc: rgba(235, 225, 250, 0.65);
+  --color-neon: #ff4d3a;
+  --color-logo-neon: #ffe9d6;
+
+  /* ── glow ── */
+  --glow-card: 0 0 24px rgba(255, 77, 58, 0.45), 0 0 64px rgba(255, 77, 58, 0.2);
+  --glow-logo: 0 0 8px #fff, 0 0 24px var(--color-neon), 0 0 72px var(--color-neon); /* 최강 */
+
+  /* ── blur / overlay ── */
+  --blur-backdrop: 48px;
+  --blur-card: 16px;
+  --overlay-black: rgba(0, 0, 0, 0.55);
+
+  /* ── border / radius ── */
+  --border-card: 1px solid var(--color-card-border);
+  --radius-card: 20px;
+  --radius-thumb: 14px;
+  --radius-pill: 999px;
+
+  /* ── typography ── */
+  --font-logo: "Playwrite IE", cursive;
+  --fw-logo: 300;
+  --fs-logo: clamp(2rem, 8vw, 3.25rem);
+  --fs-title: 1.125rem;
+  --fs-desc: 0.875rem;
+
+  /* ── layout ── */
+  --card-max-width: 720px;
+  --grid-max-width: 1080px;
+  --thumb-w-collapsed: 72px;
+  --gap-card: 24px;
+  --gap-card-inner: 16px;
+  --gap-text: 6px;
+  --pad-card: 16px;
+  --pad-page: 20px;
+  --logo-pad-top: 10vh;
+  --logo-pad-bottom: 6vh;
+  --list-pad-bottom: 40vh;      /* 모바일: 마지막 카드도 화면 중앙에 올 수 있게 */
+  /* --breakpoint-desktop: 768px — media query/viewport.ts 리터럴의 원본 (Contract 03 예외 1) */
+
+  /* ── motion ── */
+  --dur-state: 350ms;           /* 카드 확장↔축소 */
+  --dur-glow: 250ms;
+  --dur-bg: 600ms;              /* 배경 crossfade */
+  --ease-card: cubic-bezier(0.22, 1, 0.36, 1);
+  --intro-step: 420ms;          /* 모바일 인트로 카드당 간격 (JS가 읽음) */
+
+  /* ── lightfall ── */
+  --lightfall-color-a: #ff4d3a;
+  --lightfall-color-b: #48a0ff;
+  --lightfall-opacity: 0.5;
+
+  /* ── z-index (프롬프트 명세: 썸네일 < 그라디언트 < lightfall < 로고 < 카드) ── */
+  --z-thumb-backdrop: 0;
+  --z-sunset: 1;
+  --z-lightfall: 2;
+  --z-logo: 3;
+  --z-card: 4;
+}

@@ -1,0 +1,54 @@
+import { useEffect, useRef, useState } from "react";
+import type { ServiceCard } from "../../data/services";
+
+type Layer = { key: number; card: ServiceCard };
+
+// Contract 04: 활성 카드 썸네일을 cover+blur+black으로 배경에 깔고,
+// 활성 카드가 바뀌면 crossfade한다. 썸네일 파일 재사용(추가 다운로드 없음).
+export default function ThumbBackdrop({ card }: { card: ServiceCard }) {
+  const counter = useRef(0);
+  const [layers, setLayers] = useState<Layer[]>([{ key: 0, card }]);
+
+  useEffect(() => {
+    setLayers((prev) => {
+      const top = prev[prev.length - 1];
+      if (top && top.card.card_id === card.card_id) return prev;
+      counter.current += 1;
+      // 직전 레이어 1장만 유지한 채 새 레이어를 위에 얹는다
+      return [...prev.slice(-1), { key: counter.current, card }];
+    });
+  }, [card]);
+
+  // 새 레이어의 fade-in이 끝나면 아래 레이어들을 제거
+  const settle = (key: number) => {
+    setLayers((prev) => (prev.length > 1 ? prev.filter((l) => l.key >= key) : prev));
+  };
+
+  return (
+    <div className="thumb-backdrop" aria-hidden="true">
+      {layers.map((layer, i) => {
+        const isTop = i === layers.length - 1;
+        const thumb = layer.card.thumbnail;
+        return (
+          <div key={layer.key} className="thumb-backdrop-layer" onAnimationEnd={() => isTop && settle(layer.key)}>
+            {thumb.type === "video" ? (
+              <video
+                className="backdrop-media"
+                src={thumb.src}
+                poster={thumb.poster}
+                muted
+                loop
+                playsInline
+                autoPlay={isTop}
+                preload="none"
+              />
+            ) : (
+              <img className="backdrop-media" src={thumb.src} alt="" decoding="async" />
+            )}
+          </div>
+        );
+      })}
+      <div className="thumb-backdrop-overlay" />
+    </div>
+  );
+}

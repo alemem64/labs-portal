@@ -1,0 +1,247 @@
+/* Contract 03: 리터럴 값 금지 — tokens.css의 var()만 사용.
+   예외: @media의 768px (Contract 03 예외 1) */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-title);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ── 배경 레이어 ── */
+
+.thumb-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-thumb-backdrop);
+  overflow: hidden;
+}
+
+.thumb-backdrop-layer {
+  position: absolute;
+  inset: 0;
+  animation: bg-fade-in var(--dur-bg) ease forwards;
+}
+
+.backdrop-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(var(--blur-backdrop));
+  transform: scale(1.15); /* blur 가장자리 비네팅 방지 */
+  display: block;
+}
+
+.thumb-backdrop-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-black);
+}
+
+@keyframes bg-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sunset-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sunset);
+  background: linear-gradient(to top, var(--color-sunset-bottom), var(--color-sunset-top));
+  pointer-events: none;
+}
+
+.lightfall-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-lightfall);
+  pointer-events: none;
+  opacity: var(--lightfall-opacity);
+  mix-blend-mode: screen;
+}
+
+/* ── 로고 ── */
+
+.logo {
+  position: relative;
+  z-index: var(--z-logo);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+  padding: var(--logo-pad-top) 0 var(--logo-pad-bottom);
+  font-family: var(--font-logo);
+  font-weight: var(--fw-logo);
+  font-size: var(--fs-logo);
+  line-height: 1.5;
+  color: var(--color-logo-neon);
+  text-shadow: var(--glow-logo);
+}
+
+/* ── 언어 토글 ── */
+
+.lang-toggle {
+  position: fixed;
+  top: var(--pad-page);
+  right: var(--pad-page);
+  z-index: var(--z-card);
+  background: var(--color-card-bg);
+  border: var(--border-card);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-title);
+  font: inherit;
+  font-size: var(--fs-desc);
+  padding: 0.45em 1em;
+  cursor: pointer;
+  backdrop-filter: blur(var(--blur-card));
+  -webkit-backdrop-filter: blur(var(--blur-card));
+  transition: box-shadow var(--dur-glow) ease, background var(--dur-glow) ease;
+}
+
+.lang-toggle:hover,
+.lang-toggle:focus-visible {
+  outline: none;
+  background: var(--color-card-bg-glow);
+  box-shadow: var(--glow-card);
+}
+
+/* ── 카드 목록 ── */
+
+.card-list {
+  position: relative;
+  z-index: var(--z-card);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-card);
+  padding: 0 var(--pad-page) var(--pad-page);
+  max-width: var(--card-max-width);
+  margin-inline: auto;
+}
+
+@media (max-width: 767px) {
+  .card-list {
+    padding-bottom: var(--list-pad-bottom);
+  }
+}
+
+@media (min-width: 768px) {
+  .card-list {
+    grid-template-columns: 1fr 1fr;
+    max-width: var(--grid-max-width);
+    align-items: start;
+  }
+}
+
+/* ── 카드 ── */
+
+.card {
+  display: grid;
+  grid-template-areas: "thumb body arrow";
+  grid-template-columns: var(--thumb-w-collapsed) 1fr auto;
+  align-items: center;
+  gap: var(--gap-card-inner);
+  padding: var(--pad-card);
+  background: var(--color-card-bg);
+  border: var(--border-card);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(var(--blur-card));
+  -webkit-backdrop-filter: blur(var(--blur-card));
+  text-decoration: none;
+  color: inherit;
+  transition:
+    background var(--dur-glow) ease,
+    box-shadow var(--dur-glow) ease,
+    border-color var(--dur-glow) ease,
+    grid-template-columns var(--dur-state) var(--ease-card);
+}
+
+.card[data-expanded] {
+  grid-template-areas:
+    "thumb"
+    "body";
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
+.card[data-glow] {
+  background: var(--color-card-bg-glow);
+  border-color: var(--color-card-border-glow);
+  box-shadow: var(--glow-card);
+}
+
+.card:focus-visible {
+  outline: none;
+  border-color: var(--color-card-border-glow);
+  box-shadow: var(--glow-card);
+}
+
+.card-thumb {
+  grid-area: thumb;
+  aspect-ratio: 1;
+  width: 100%;
+  border-radius: var(--radius-thumb);
+  overflow: hidden;
+}
+
+.thumb-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-body {
+  grid-area: body;
+  min-width: 0;
+}
+
+.card-title {
+  margin: 0;
+  font-size: var(--fs-title);
+  color: var(--color-text-title);
+}
+
+.card-desc {
+  margin: var(--gap-text) 0 0;
+  font-size: var(--fs-desc);
+  color: var(--color-text-desc);
+}
+
+.card:not([data-expanded]) .card-title,
+.card:not([data-expanded]) .card-desc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-arrow {
+  grid-area: arrow;
+  display: flex;
+  color: var(--color-text-desc);
+}
+
+.card[data-expanded] .card-arrow {
+  display: none;
+}
+
+/* ── 모션 최소화 ── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
