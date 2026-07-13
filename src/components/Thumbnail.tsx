@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DEFAULT_THUMBNAIL, type ServiceCard, type ServiceThumbnail } from "../data/services";
 
 type Props = {
@@ -12,6 +12,8 @@ type Props = {
   className?: string;
   /** 배경처럼 동영상 재생이 불필요한 곳에서는 poster 이미지만 사용 */
   preferPoster?: boolean;
+  /** 원본 video 프레임을 배경 canvas와 공유하기 위한 DOM 요소 전달 */
+  onVideoElementChange?: (element: HTMLVideoElement | null) => void;
 };
 
 function initialMedia(thumb: Props["thumb"], ogImage?: string, preferPoster?: boolean): ServiceThumbnail {
@@ -21,9 +23,25 @@ function initialMedia(thumb: Props["thumb"], ogImage?: string, preferPoster?: bo
     : resolved;
 }
 
-export default function Thumbnail({ thumb, ogImage, active, eager, className = "thumb-media", preferPoster }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+export default function Thumbnail({
+  thumb,
+  ogImage,
+  active,
+  eager,
+  className = "thumb-media",
+  preferPoster,
+  onVideoElementChange,
+}: Props) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [media, setMedia] = useState<ServiceThumbnail>(() => initialMedia(thumb, ogImage, preferPoster));
+
+  const setVideoRef = useCallback(
+    (element: HTMLVideoElement | null) => {
+      videoRef.current = element;
+      onVideoElementChange?.(element);
+    },
+    [onVideoElementChange],
+  );
 
   useEffect(() => {
     setMedia(initialMedia(thumb, ogImage, preferPoster));
@@ -54,7 +72,7 @@ export default function Thumbnail({ thumb, ogImage, active, eager, className = "
   if (media.type === "video") {
     return (
       <video
-        ref={videoRef}
+        ref={setVideoRef}
         className={className}
         src={media.src}
         poster={media.poster}

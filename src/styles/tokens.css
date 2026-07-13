@@ -110,6 +110,15 @@
   --intro-step: 420ms;
   /* 모바일 인트로 카드당 간격 (JS가 읽음) */
 
+  /* ── mobile active-card rail ── */
+  --active-rail-upper: 0.42;
+  --active-rail-lower: 0.58;
+  --active-top-latch: 2px;
+  --active-bottom-latch: 120px;
+  --active-scroll-epsilon: 2px;
+  --active-lock-buffer: 48ms;
+  --programmatic-scroll-lock: 1800ms;
+
   /* ── lightfall ── */
   --lightfall-color-a: #ff4d3a;
   --lightfall-color-b: #48a0ff;

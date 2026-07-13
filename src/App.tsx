@@ -18,9 +18,22 @@ export default function App() {
   const hashTarget = useHashTarget(cardIds);
 
   const cardRefs = useRef(new Map<string, HTMLElement>());
+  const [cardVideos, setCardVideos] = useState<Map<string, HTMLVideoElement>>(() => new Map());
   const registerCard = useCallback((id: string, el: HTMLElement | null) => {
     if (el) cardRefs.current.set(id, el);
     else cardRefs.current.delete(id);
+  }, []);
+
+  const registerCardVideo = useCallback((id: string, element: HTMLVideoElement | null) => {
+    setCardVideos((current) => {
+      const previous = current.get(id) ?? null;
+      if (previous === element) return current;
+
+      const next = new Map(current);
+      if (element) next.set(id, element);
+      else next.delete(id);
+      return next;
+    });
   }, []);
 
   const initialId = hashTarget ?? cardIds[0];
@@ -35,9 +48,11 @@ export default function App() {
     if (id) setDesktopBgId(id);
   }, []);
 
-  // 모바일: 스크롤 중앙 카드 판정 (인트로 중에는 정지 — Contract 04)
-  useActiveCard({
+  // 모바일: 방향별 rail + hysteresis 상태 판정 (인트로 중에는 정지 — Contract 04)
+  const { suspend: suspendMobileActiveTracking } = useActiveCard({
     enabled: !isDesktop && introDone,
+    ids: cardIds,
+    activeId: mobileActiveId,
     refs: cardRefs,
     onChange: setMobileActiveId,
   });
@@ -76,18 +91,20 @@ export default function App() {
       return () => clearTimeout(timer);
     }
     if (introDone) {
+      suspendMobileActiveTracking();
       el.scrollIntoView({ block: "center", behavior: smooth ? "smooth" : "auto" });
       setMobileActiveId(hashTarget);
     }
-  }, [hashTarget, isDesktop, introDone]);
+  }, [hashTarget, isDesktop, introDone, suspendMobileActiveTracking]);
 
   const backgroundId = isDesktop ? desktopBgId : mobileActiveId;
   const backgroundCard = services.find((s) => s.card_id === backgroundId) ?? services[0];
+  const backgroundVideo = cardVideos.get(backgroundId) ?? null;
   const glowingId = isDesktop ? (hoverId ?? pulseId) : mobileActiveId;
 
   return (
     <LocaleProvider>
-      <BackgroundStage card={backgroundCard} />
+      <BackgroundStage card={backgroundCard} video={backgroundVideo} />
       <main>
         <Logo />
         <CardList
@@ -97,6 +114,7 @@ export default function App() {
           glowingId={glowingId}
           onHoverChange={isDesktop ? handleHover : undefined}
           register={registerCard}
+          registerVideo={registerCardVideo}
         />
       </main>
       <SiteFooter />

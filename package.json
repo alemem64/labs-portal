@@ -8,6 +8,7 @@
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck && vite build",
     "preview": "vite preview",
+    "cloudflare:allow-og-scanner": "node scripts/allow-og-scanner-ips.mjs",
     "deploy": "wrangler deploy"
   },
   "dependencies": {

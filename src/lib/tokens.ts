@@ -14,6 +14,11 @@ export function readTokenMs(name: string, fallback: number): number {
   return n;
 }
 
+export function readTokenNumber(name: string, fallback: number): number {
+  const value = parseFloat(readToken(name));
+  return Number.isFinite(value) ? value : fallback;
+}
+
 /** "#rrggbb" → [r, g, b] (0..1). 실패 시 null */
 export function readTokenRgb(name: string): [number, number, number] | null {
   const v = readToken(name);

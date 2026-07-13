@@ -11,9 +11,10 @@ type Props = {
   eager?: boolean;
   onHoverChange?: (id: string | null) => void;
   register: (id: string, el: HTMLElement | null) => void;
+  registerVideo: (id: string, element: HTMLVideoElement | null) => void;
 };
 
-export default function Card({ card, expanded, glowing, eager, onHoverChange, register }: Props) {
+export default function Card({ card, expanded, glowing, eager, onHoverChange, register, registerVideo }: Props) {
   const { locale, t } = useLocale();
   const [layoutExpanded, setLayoutExpanded] = useState(expanded);
   const cardRef = useRef<HTMLAnchorElement | null>(null);
@@ -33,6 +34,11 @@ export default function Card({ card, expanded, glowing, eager, onHoverChange, re
       register(card.card_id, el);
     },
     [card.card_id, register],
+  );
+
+  const setThumbnailVideo = useCallback(
+    (element: HTMLVideoElement | null) => registerVideo(card.card_id, element),
+    [card.card_id, registerVideo],
   );
 
   useEffect(() => {
@@ -157,6 +163,7 @@ export default function Card({ card, expanded, glowing, eager, onHoverChange, re
           active={expanded || glowing}
           eager={eager}
           className="thumb-media card-primary-media"
+          onVideoElementChange={setThumbnailVideo}
         />
       </div>
       <div ref={bodyRef} className="card-body">
