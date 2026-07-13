@@ -3,11 +3,15 @@
              ② index.html 인라인 critical CSS (이 파일 값의 복사본) */
 :root {
   /* ── color ── */
-  --color-bg-base: #0a0710;                          /* 최하단 폴백 배경 */
-  --color-sunset-bottom: rgba(255, 61, 40, 0.55);    /* 역석양: 아래(붉음) */
-  --color-sunset-top: rgba(72, 160, 255, 0.35);      /* 역석양: 위(하늘) */
+  --color-bg-base: #0a0710;
+  /* 최하단 폴백 배경 */
+  --color-sunset-bottom: rgba(255, 61, 40, 0.55);
+  /* 역석양: 아래(붉음) */
+  --color-sunset-top: rgba(72, 160, 255, 0.35);
+  /* 역석양: 위(하늘) */
   --color-card-bg: rgba(20, 14, 28, 0.38);
-  --color-card-bg-glow: rgba(64, 18, 24, 0.56);      /* glow 시 더 붉은 카드 배경 */
+  --color-card-bg-glow: rgba(64, 18, 24, 0.56);
+  /* glow 시 더 붉은 카드 배경 */
   --color-card-border: rgba(232, 235, 242, 0.48);
   --color-card-border-glow: rgba(255, 220, 214, 0.72);
   --color-text-title: #f5f0ff;
@@ -17,22 +21,41 @@
 
   /* ── glow ── */
   --glow-card: 0 0 24px rgba(255, 77, 58, 0.45), 0 0 64px rgba(255, 77, 58, 0.2);
-  --glow-logo: 0 0 8px #fff, 0 0 24px var(--color-neon), 0 0 72px var(--color-neon); /* 최강 */
+  --glow-logo: 0 0 8px #fff, 0 0 24px var(--color-neon), 0 0 72px var(--color-neon);
+  /* 최강 */
 
   /* ── blur / overlay ── */
-  --blur-backdrop: 48px;
+  --blur-backdrop: 18px;
+  --backdrop-scale: 1.08;
   --blur-card: 10px;
-  --overlay-black: rgba(0, 0, 0, 0.46);
+  --overlay-black: rgba(0, 0, 0, 0.4);
 
   /* ── border / radius ── */
   --border-card: 1px solid var(--color-card-border);
-  --radius-card: 16px;
-  --radius-thumb: 10px;
+  --radius-card: 48px;
+  --radius-thumb: 38px;
+  --radius-flyout: 24px;
+  --radius-title-logo: 10px;
   --radius-pill: 999px;
+
+  /* ── black hole ── */
+  --black-hole-gradient: radial-gradient(ellipse at center,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.995) 54%,
+      rgba(7, 0, 1, 0.98) 63%,
+      rgba(35, 2, 4, 0.92) 70%,
+      rgba(128, 14, 10, 0.72) 79%,
+      rgba(255, 61, 40, 0.25) 89%,
+      rgba(255, 61, 40, 0) 100%);
+  --black-hole-width: 190vw;
+  --black-hole-height: 86vh;
+  --black-hole-bottom: -51vh;
+  --black-hole-radius: 50%;
+  --black-hole-blur: 10px;
 
   /* ── typography ── */
   --font-logo: "Playwrite IE", cursive;
-  --fw-logo: 300;
+  --fw-logo: 400;
   --fs-logo: clamp(1.65rem, 6.8vw, 3rem);
   --fs-title: 1rem;
   --fs-desc: 0.8125rem;
@@ -45,24 +68,47 @@
   --thumb-ratio-expanded: 16 / 9;
   --gap-card: 34px;
   --gap-card-inner: 12px;
+  --gap-card-heading: 10px;
   --gap-text: 4px;
   --pad-card: 12px;
+  --pad-card-body-expanded: 10px 14px 14px;
   --pad-page: clamp(24px, 5vw, 56px);
   --logo-pad-top: clamp(40px, 8vh, 88px);
   --logo-pad-bottom: clamp(28px, 5vh, 52px);
-  --list-pad-bottom: 36vh;      /* 모바일: 마지막 카드도 화면 중앙에 올 수 있게 */
+  --list-pad-bottom: 36vh;
+  --footer-min-height: 42vh;
+  --footer-pad-top: 10vh;
+  --footer-pad-bottom: clamp(24px, 5vh, 52px);
+  --footer-gap: 22px;
+  --footer-max-width: 520px;
+  --business-fs: 0.6875rem;
+  --business-line-height: 1.65;
+  --business-label-width: 7.5rem;
+  --business-row-gap: 3px;
+  --business-column-gap: 12px;
+  --lang-control-gap: 8px;
+  --lang-flyout-offset: 10px;
+  --lang-flyout-shift: 8px;
+  --lang-icon-size: 15px;
+  --lang-chevron-size: 13px;
+  --card-title-logo-size: 30px;
+  --card-title-logo-scale-hidden: 0.82;
+  /* 모바일: 마지막 카드도 화면 중앙에 올 수 있게 */
   /* --breakpoint-desktop: 768px — media query/viewport.ts 리터럴의 원본 (Contract 03 예외 1) */
 
   /* ── motion ── */
-  --dur-state: 420ms;           /* 카드 확장↔축소 */
+  --dur-state: 420ms;
+  /* 카드 확장↔축소 */
   --dur-media-fade: 140ms;
   --dur-glow: 280ms;
-  --dur-bg: 700ms;              /* 배경 crossfade */
+  --dur-bg: 700ms;
+  /* 배경 crossfade */
   --ease-standard: ease-in-out;
   --card-lift: -4px;
   --arrow-shift: 4px;
   --thumb-scale-active: 1.025;
-  --intro-step: 420ms;          /* 모바일 인트로 카드당 간격 (JS가 읽음) */
+  --intro-step: 420ms;
+  /* 모바일 인트로 카드당 간격 (JS가 읽음) */
 
   /* ── lightfall ── */
   --lightfall-color-a: #ff4d3a;
@@ -75,4 +121,5 @@
   --z-lightfall: 2;
   --z-card: 4;
   --z-logo: 4;
+  --z-flyout: 5;
 }

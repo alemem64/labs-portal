@@ -160,7 +160,22 @@ export default function Card({ card, expanded, glowing, eager, onHoverChange, re
         />
       </div>
       <div ref={bodyRef} className="card-body">
-        <h2 className="card-title">{card.title[locale]}</h2>
+        <div className="card-heading">
+          <span className="card-title-logo" aria-hidden="true">
+            <img
+              className="card-title-logo-media"
+              src={card.appLogo}
+              alt=""
+              loading={eager ? "eager" : "lazy"}
+              decoding="async"
+              onError={(event) => {
+                if (event.currentTarget.src.endsWith(DEFAULT_THUMBNAIL.src)) return;
+                event.currentTarget.src = DEFAULT_THUMBNAIL.src;
+              }}
+            />
+          </span>
+          <h2 className="card-title">{card.title[locale]}</h2>
+        </div>
         <p className="card-desc">{card.desc[locale]}</p>
       </div>
       <div className="card-arrow" aria-hidden="true">

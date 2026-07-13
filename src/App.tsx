@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { services } from "./data/services";
 import { LocaleProvider } from "./i18n/LocaleContext";
 import Logo from "./components/Logo";
-import LangToggle from "./components/LangToggle";
 import CardList from "./components/CardList";
+import SiteFooter from "./components/SiteFooter";
 import BackgroundStage from "./components/background/BackgroundStage";
 import { useIsDesktop } from "./hooks/useIsDesktop";
 import { useHashTarget } from "./hooks/useHashTarget";
@@ -88,7 +88,6 @@ export default function App() {
   return (
     <LocaleProvider>
       <BackgroundStage card={backgroundCard} />
-      <LangToggle />
       <main>
         <Logo />
         <CardList
@@ -100,6 +99,7 @@ export default function App() {
           register={registerCard}
         />
       </main>
+      <SiteFooter />
     </LocaleProvider>
   );
 }

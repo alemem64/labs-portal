@@ -6,12 +6,14 @@ export const messages = {
   ko: {
     open: "바로가기",
     switchLang: "English",
-    switchLangAria: "Switch to English",
+    switchLangAria: "언어 선택 열기",
+    languageMenuAria: "언어 선택",
   },
   en: {
     open: "Open",
     switchLang: "한국어",
-    switchLangAria: "한국어로 전환",
+    switchLangAria: "Open language selector",
+    languageMenuAria: "Select language",
   },
 } satisfies Record<Locale, Record<string, string>>;
 

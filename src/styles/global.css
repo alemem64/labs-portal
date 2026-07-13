@@ -38,7 +38,7 @@ body {
   height: 100%;
   object-fit: cover;
   filter: blur(var(--blur-backdrop));
-  transform: scale(1.15); /* blur 가장자리 비네팅 방지 */
+  transform: scale(var(--backdrop-scale)); /* blur 가장자리 비네팅 방지 */
   display: block;
 }
 
@@ -58,7 +58,21 @@ body {
   inset: 0;
   z-index: var(--z-sunset);
   background: linear-gradient(to top, var(--color-sunset-bottom), var(--color-sunset-top));
+  overflow: hidden;
   pointer-events: none;
+}
+
+.sunset-gradient::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: var(--black-hole-bottom);
+  width: var(--black-hole-width);
+  height: var(--black-hole-height);
+  transform: translateX(-50%);
+  border-radius: var(--black-hole-radius);
+  background: var(--black-hole-gradient);
+  filter: blur(var(--black-hole-blur));
 }
 
 .lightfall-canvas {
@@ -91,13 +105,75 @@ body {
   white-space: nowrap;
 }
 
-/* ── 언어 토글 ── */
+/* ── 하단 정보 / 언어 선택 ── */
+
+.site-footer {
+  position: relative;
+  z-index: var(--z-card);
+  min-height: var(--footer-min-height);
+  padding: var(--footer-pad-top) var(--pad-page) var(--footer-pad-bottom);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--footer-gap);
+  width: 100%;
+  margin-inline: auto;
+}
+
+.business-info {
+  width: min(100%, var(--footer-max-width));
+  font-size: var(--business-fs);
+  font-style: normal;
+  line-height: var(--business-line-height);
+  color: var(--color-text-desc);
+}
+
+.business-info dl {
+  margin: 0;
+}
+
+.business-info-row {
+  display: grid;
+  grid-template-columns: var(--business-label-width) minmax(0, 1fr);
+  column-gap: var(--business-column-gap);
+  row-gap: var(--business-row-gap);
+}
+
+.business-info dt {
+  color: var(--color-text-title);
+  text-align: right;
+}
+
+.business-info dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.business-info a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-glow) var(--ease-standard);
+}
+
+.business-info a:hover,
+.business-info a:focus-visible {
+  color: var(--color-text-title);
+}
+
+.lang-control {
+  position: relative;
+  z-index: var(--z-flyout);
+  display: flex;
+  justify-content: center;
+}
 
 .lang-toggle {
-  position: fixed;
-  top: var(--pad-page);
-  right: var(--pad-page);
-  z-index: var(--z-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lang-control-gap);
   background: var(--color-card-bg);
   border: var(--border-card);
   border-radius: var(--radius-pill);
@@ -115,12 +191,89 @@ body {
     transform var(--dur-glow) var(--ease-standard);
 }
 
+.lang-icon,
+.lang-chevron {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lang-icon {
+  width: var(--lang-icon-size);
+  height: var(--lang-icon-size);
+}
+
+.lang-chevron {
+  width: var(--lang-chevron-size);
+  height: var(--lang-chevron-size);
+  transition: transform var(--dur-glow) var(--ease-standard);
+}
+
+.lang-toggle[aria-expanded="true"] .lang-chevron {
+  transform: rotate(180deg);
+}
+
 .lang-toggle:hover,
 .lang-toggle:focus-visible {
   outline: none;
   background: var(--color-card-bg-glow);
   box-shadow: var(--glow-card);
   transform: translateY(var(--card-lift));
+}
+
+.lang-flyout {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + var(--lang-flyout-offset));
+  display: grid;
+  min-width: 100%;
+  padding: var(--lang-control-gap);
+  background: var(--color-card-bg);
+  border: var(--border-card);
+  border-radius: var(--radius-flyout);
+  backdrop-filter: blur(var(--blur-card));
+  -webkit-backdrop-filter: blur(var(--blur-card));
+  box-shadow: var(--glow-card);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, var(--lang-flyout-shift));
+  transition:
+    opacity var(--dur-glow) var(--ease-standard),
+    visibility var(--dur-glow) var(--ease-standard),
+    transform var(--dur-glow) var(--ease-standard);
+}
+
+.lang-flyout[data-open] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.lang-option {
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 0.55em 1em;
+  background: transparent;
+  color: var(--color-text-desc);
+  font: inherit;
+  font-size: var(--fs-desc);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--dur-glow) var(--ease-standard),
+    background var(--dur-glow) var(--ease-standard);
+}
+
+.lang-option[data-active],
+.lang-option:hover,
+.lang-option:focus-visible {
+  outline: none;
+  color: var(--color-text-title);
+  background: var(--color-card-bg-glow);
 }
 
 /* ── 카드 목록 ── */
@@ -249,10 +402,62 @@ body {
     transform var(--dur-state) var(--ease-standard);
 }
 
+.card[data-expanded] .card-body {
+  padding: var(--pad-card-body-expanded);
+}
+
 .card-title {
+  min-width: 0;
   margin: 0;
   font-size: var(--fs-title);
   color: var(--color-text-title);
+}
+
+.card-heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0;
+  transition: gap var(--dur-state) var(--ease-standard);
+}
+
+.card-title-logo {
+  flex: 0 0 0;
+  width: 0;
+  height: var(--card-title-logo-size);
+  border-radius: var(--radius-title-logo);
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(var(--card-title-logo-scale-hidden));
+  transition:
+    flex-basis var(--dur-state) var(--ease-standard),
+    width var(--dur-state) var(--ease-standard),
+    opacity var(--dur-state) var(--ease-standard),
+    transform var(--dur-state) var(--ease-standard);
+}
+
+.card[data-expanded] .card-heading {
+  gap: var(--gap-card-heading);
+}
+
+.card[data-expanded] .card-title-logo {
+  flex-basis: var(--card-title-logo-size);
+  width: var(--card-title-logo-size);
+  opacity: 1;
+  transform: none;
+}
+
+.card-title-logo-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-state) var(--ease-standard);
+}
+
+.card[data-glow] .card-title-logo-media,
+.card:focus-visible .card-title-logo-media {
+  transform: scale(var(--thumb-scale-active));
 }
 
 .card-desc {

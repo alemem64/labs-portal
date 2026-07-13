@@ -17,6 +17,7 @@ export function detectLocale(): Locale {
 type LocaleCtx = {
   locale: Locale;
   toggle: () => void;
+  selectLocale: (locale: Locale) => void;
   t: (key: MessageKey) => string;
 };
 
@@ -37,6 +38,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   const value: LocaleCtx = {
     locale,
     toggle: () => setLocale((l) => (l === "ko" ? "en" : "ko")),
+    selectLocale: setLocale,
     t: (key) => messages[locale][key],
   };
 
