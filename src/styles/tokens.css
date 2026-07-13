@@ -25,8 +25,8 @@
   /* 최강 */
 
   /* ── blur / overlay ── */
-  --blur-backdrop: 18px;
-  --backdrop-scale: 1.08;
+  --blur-backdrop: 8px;
+  --backdrop-scale: 1.04;
   --blur-card: 10px;
   --overlay-black: rgba(0, 0, 0, 0.4);
 
@@ -49,14 +49,14 @@
       rgba(255, 61, 40, 0) 100%);
   --black-hole-width: 190vw;
   --black-hole-height: 86vh;
-  --black-hole-bottom: -51vh;
+  --black-hole-bottom: -58vh;
   --black-hole-radius: 50%;
   --black-hole-blur: 10px;
 
   /* ── typography ── */
   --font-logo: "Playwrite IE", cursive;
   --fw-logo: 400;
-  --fs-logo: clamp(1.65rem, 6.8vw, 3rem);
+  --fs-logo: clamp(1.8rem, 7.2vw, 3.3rem);
   --fs-title: 1rem;
   --fs-desc: 0.8125rem;
 
@@ -75,10 +75,10 @@
   --pad-page: clamp(24px, 5vw, 56px);
   --logo-pad-top: clamp(40px, 8vh, 88px);
   --logo-pad-bottom: clamp(28px, 5vh, 52px);
-  --list-pad-bottom: 36vh;
-  --footer-min-height: 42vh;
-  --footer-pad-top: 10vh;
-  --footer-pad-bottom: clamp(24px, 5vh, 52px);
+  --list-pad-bottom: 0px;
+  --footer-min-height: 0px;
+  --footer-pad-top: clamp(28px, 5vh, 52px);
+  --footer-pad-bottom: clamp(20px, 3vh, 32px);
   --footer-gap: 22px;
   --footer-max-width: 520px;
   --business-fs: 0.6875rem;

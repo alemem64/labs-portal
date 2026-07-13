@@ -284,7 +284,7 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--gap-card);
-  padding: 0 var(--pad-page) var(--pad-page);
+  padding: 0 var(--pad-page) var(--list-pad-bottom);
   max-width: var(--card-max-width);
   width: 100%;
   margin-inline: auto;
