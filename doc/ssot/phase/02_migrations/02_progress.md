@@ -41,6 +41,31 @@
 - ⚠️ **focusroyale-api.leapsignal.net(게임 API, EC2 직결)이 접속 불가(000)** — 이번 작업과 무관하게 원래 그런 상태(방화벽 IP 제한이면 정상일 수 있음). 게임이 라이브라면 확인 권장.
 - SSL mode는 이미 Full(strict) ✓. 터널 엔드포인트 2개(-mac/-win)는 530(터널 다운, 개발용 추정)이라 BFM 영향 없음.
 
+## 2026-07-13 — M2 완료 ✅ (eclipse + ypjr 복구, 사용자 확정 반영)
+
+사용자 확정: nanomanana/yaeya는 미사용 서비스(이전 제외), focusroyale-api 000은 웹용 API로 사용자 인지 상태(조치 불요).
+
+**eclipse.leapsignal.net — 복구 완료 (402 → 200)**
+- `wrangler.jsonc`(assets=dist) + `main/public/_headers`(og-image immutable 캐시) 추가. 코드 무변경.
+- 기존 Vercel CNAME 삭제(롤백값: `90733195fac0b419.vercel-dns-017.com`) → Worker custom domain 연결.
+- 검증: `/` 200 + 타이틀 "Eclipse Voyager", `/privacy` cleanURL 200, og-image 캐시 헤더 ✓.
+- GitHub Actions Deploy 추가 (secrets 등록, main push 자동 배포) — success 확인.
+- ⚠️ **사고 및 회복**: eclipse repo에는 `.githooks/pre-push`가 있어 `main/` 하위 변경을 main에 push하면 **App Store/Play 업로드까지 자동 실행**된다. 첫 push에서 iOS 빌드가 발동됐고, 업로드 0%(준비) 단계에서 중단시킴 — 스토어에 올라간 것 없음, Android는 미시작. **이후 이 repo push는 항상 `SKIP_RELEASE=1 git push`** (앱 릴리스 의도가 있을 때만 생략).
+
+**ypjr.leapsignal.net — 복구 완료 (402 → 200)**
+- `next.config.ts`: `output: 'export'` + `images.unoptimized`(원본이 이미 R2라 체감 무손실).
+- `app/api/og/route.ts`(cheerio) → `worker/index.js`(HTMLRewriter, 의존성 0)로 동일 JSON 계약 이식. `run_worker_first: ["/api/*"]`로 정적 경로는 무료 서빙 유지.
+- 검증: 페이지 200 + 실제 타이틀, `/api/og` 프로덕션 동작(OG 태그 있는 페이지로 추출 확인), 에러 케이스 400 ✓.
+- 참고: 대상 페이지(focusroyale `/ko/ypjr`)의 원본 HTML에 OG 태그가 없어 빈 값 반환 — **구 cheerio 버전과 동일한 결과**(파서 문제 아님). focusroyale 쪽 메타데이터 문제로 별도 기록.
+- 기존 CNAME 롤백값: `24addebb0d279476.vercel-dns-017.com`.
+- GitHub Actions Deploy 추가 — success 확인.
+
+**CI 교훈**: `cloudflare/wrangler-action@v3` 기본 wrangler가 3.90이라 `wrangler.jsonc`를 못 읽음("Missing entry-point") → `wranglerVersion: "4.110.0"` 고정으로 해결. 새 repo에 워크플로 추가 시 필수.
+
+**보안 메모**: ypjr git remote URL에 GitHub PAT(ghp_…)가 평문으로 박혀 있음 — `git remote set-url origin https://github.com/alemem64/ypjr.git` + credential helper 사용 권장. 해당 PAT 폐기 권장.
+
+**남은 단계**: M4(personal-blog SSG 전환) → M5(noxionite) → M7(focus-royale/web) → M8(관찰·정리).
+
 ## 2026-07-13 — M1 중단 이력: API 토큰 권한 부족 (해결됨)
 
 - M1(봇 차단·캐시 규칙·rate limit)과 이후 DNS 전환은 Cloudflare **zone 권한**이 필요.
