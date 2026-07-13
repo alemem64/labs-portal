@@ -66,6 +66,24 @@
 
 **남은 단계**: M4(personal-blog SSG 전환) → M5(noxionite) → M7(focus-royale/web) → M8(관찰·정리).
 
+## 2026-07-13 — M4·M5 완료 ✅ (personal-blog + noxionite → Cloudflare Workers, $0)
+
+**결과**: `jzahnny.leapsignal.net` 복구 (402 → 200, 697페이지 전체 SSG), `noxionite.leapsignal.net` 신규 서빙. 실측 검증: 홈/ko/전체태그/포스트/OG 이미지 200, 없는 slug 404.
+
+**적용 방식** (플랜 개정 — 사전 계획 대비 달라진 점 포함):
+- `output: 'export'`는 Pages Router i18n(en/ko)을 지원하지 않아 **OpenNext(무료 플랜) + 완전 SSG** 조합으로 진행. 전 페이지 프리렌더 + static-assets incremental cache(읽기 전용)라 런타임 재렌더 없음 → 무료 10ms CPU 한도 내. 비용 $0 유지.
+- **핵심 발견**: 기존 getStaticPaths가 subpage를 제외하고 있어 대부분의 포스트(695/697)가 fallback:'blocking'(=ISR)으로만 서빙되고 있었음 — ISR Write 폭주의 실체. subpage 포함 전체 생성으로 수정.
+- OG 이미지: edge runtime `/api/og`는 OpenNext가 거부 → **빌드 시 satori 사전 생성**(556장, Noto Sans KR, 디자인 동일). 빌드된 HTML에서 og 메타를 역추출하는 방식이라 PageHead 로직과 항상 일치.
+- Workers 호환 조치: puppeteer 런타임 사슬 절단, `lqip-modern`(sharp) lazy import, `ofetch` workerd 엔트리 트레이싱 포함.
+- Notion 429 대응: 생성 동시성 4→2, 재시도 env(10회/3s~30s) — CI에도 적용.
+- CI: `opennextjs-cloudflare deploy`(populateCache 포함)로 배포. blog는 매시 cron 재빌드(구 revalidate 3600과 동일 신선도), noxionite는 6시간.
+
+**미해결 1건 — 검색 API**: `/api/search-notion`이 Notion 비공식 검색 호출 시 400 (Node 로컬에서도 동일 → 이전과 무관). `NOTION_TOKEN_V2` 환경변수가 Vercel에만 있었던 것으로 추정. **사용자에게 토큰 요청 후** Cloudflare secret(`wrangler secret put NOTION_TOKEN_V2`) 등록 필요.
+
+**남은 뒷정리**: 구 CNAME 롤백값 — jzahnny: `ddefc7dbd481d0d9.vercel-dns-017.com`, noxionite: `d462746f52867eb2.vercel-dns-017.com`.
+
+**작업 사고 기록**: 진단 명령에 실수로 섞인 `git stash`가 personal-blog의 미커밋 변경(사용자 WIP 포함)을 stash로 밀어냄 → 즉시 `git stash pop`으로 전량 복구, 손실 없음. 이후 빌드는 처음부터 재실행해 오염 가능성 제거.
+
 ## 2026-07-13 — M1 중단 이력: API 토큰 권한 부족 (해결됨)
 
 - M1(봇 차단·캐시 규칙·rate limit)과 이후 DNS 전환은 Cloudflare **zone 권한**이 필요.
