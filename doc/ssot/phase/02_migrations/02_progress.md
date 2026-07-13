@@ -66,6 +66,18 @@
 
 **남은 단계**: M4(personal-blog SSG 전환) → M5(noxionite) → M7(focus-royale/web) → M8(관찰·정리).
 
+## 2026-07-13 — M4·M5 CI 파이프라인 완성 ✅ (4/4 green)
+
+personal-blog·Noxionite 모두 **CI(lint/prettier) + Deploy(빌드→populateCache→wrangler) 전부 통과**. CI가 배포한 프로덕션 재검증: blog·noxionite 홈/ko/포스트 전부 200. 이제 push(또는 cron)만으로 자동 재빌드·배포된다.
+
+CI에서만 터진 문제와 해결 (로컬은 npm/pnpm 혼합 설치라 통과했었음):
+- pnpm 격리 레이아웃에서 OpenNext 번들이 `styled-jsx`/`ofetch`를 못 찾음 → `.npmrc`에 `node-linker=hoisted`.
+- blog만 `ofetch`가 caret(^1.4.1→1.5.1)로 풀려 notion-client의 1.4.1과 중첩 분리 → 정확히 1.4.1 고정.
+- tsconfig `moduleResolution: node`가 어댑터 서브패스 타입을 못 찾음 → ts-ignore + eslint ignore 처리.
+- eslint가 `.open-next`/어댑터 타입까지 스캔해 CI에서 OOM → eslint ignores 추가.
+- `git add -A`가 빌드 산출물(.open-next/.wrangler)을 커밋했던 것 → .gitignore + `git rm --cached`로 정리.
+- 실수로 커밋한 산출물·prettier 불일치로 기존 Test 워크플로가 깨졌던 것도 함께 복구 (양 repo test 통과).
+
 ## 2026-07-13 — M4·M5 완료 ✅ (personal-blog + noxionite → Cloudflare Workers, $0)
 
 **결과**: `jzahnny.leapsignal.net` 복구 (402 → 200, 697페이지 전체 SSG), `noxionite.leapsignal.net` 신규 서빙. 실측 검증: 홈/ko/전체태그/포스트/OG 이미지 200, 없는 slug 404.
