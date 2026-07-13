@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ServiceCard } from "../../data/services";
+import Thumbnail from "../Thumbnail";
 
 type Layer = { key: number; card: ServiceCard };
 
@@ -28,23 +29,16 @@ export default function ThumbBackdrop({ card }: { card: ServiceCard }) {
     <div className="thumb-backdrop" aria-hidden="true">
       {layers.map((layer, i) => {
         const isTop = i === layers.length - 1;
-        const thumb = layer.card.thumbnail;
         return (
           <div key={layer.key} className="thumb-backdrop-layer" onAnimationEnd={() => isTop && settle(layer.key)}>
-            {thumb.type === "video" ? (
-              <video
-                className="backdrop-media"
-                src={thumb.src}
-                poster={thumb.poster}
-                muted
-                loop
-                playsInline
-                autoPlay={isTop}
-                preload="none"
-              />
-            ) : (
-              <img className="backdrop-media" src={thumb.src} alt="" decoding="async" />
-            )}
+            <Thumbnail
+              thumb={layer.card.thumbnail}
+              ogImage={layer.card.ogImage}
+              active={isTop}
+              eager={isTop}
+              className="backdrop-media"
+              preferPoster
+            />
           </div>
         );
       })}

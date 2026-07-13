@@ -3,3 +3,5 @@ dist/
 .wrangler/
 *.log
 .DS_Store
+/original_assets/
+/r2_assets/

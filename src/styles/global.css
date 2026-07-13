@@ -15,6 +15,7 @@ body {
   background-color: var(--color-bg-base);
   color: var(--color-text-title);
   font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }
 
 /* ── 배경 레이어 ── */
@@ -29,7 +30,7 @@ body {
 .thumb-backdrop-layer {
   position: absolute;
   inset: 0;
-  animation: bg-fade-in var(--dur-bg) ease forwards;
+  animation: bg-fade-in var(--dur-bg) var(--ease-standard) forwards;
 }
 
 .backdrop-media {
@@ -77,9 +78,9 @@ body {
   position: relative;
   z-index: var(--z-logo);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  gap: 0.1em;
   padding: var(--logo-pad-top) 0 var(--logo-pad-bottom);
   font-family: var(--font-logo);
   font-weight: var(--fw-logo);
@@ -87,6 +88,7 @@ body {
   line-height: 1.5;
   color: var(--color-logo-neon);
   text-shadow: var(--glow-logo);
+  white-space: nowrap;
 }
 
 /* ── 언어 토글 ── */
@@ -106,7 +108,11 @@ body {
   cursor: pointer;
   backdrop-filter: blur(var(--blur-card));
   -webkit-backdrop-filter: blur(var(--blur-card));
-  transition: box-shadow var(--dur-glow) ease, background var(--dur-glow) ease;
+  transition:
+    box-shadow var(--dur-glow) var(--ease-standard),
+    background var(--dur-glow) var(--ease-standard),
+    border-color var(--dur-glow) var(--ease-standard),
+    transform var(--dur-glow) var(--ease-standard);
 }
 
 .lang-toggle:hover,
@@ -114,6 +120,7 @@ body {
   outline: none;
   background: var(--color-card-bg-glow);
   box-shadow: var(--glow-card);
+  transform: translateY(var(--card-lift));
 }
 
 /* ── 카드 목록 ── */
@@ -126,6 +133,7 @@ body {
   gap: var(--gap-card);
   padding: 0 var(--pad-page) var(--pad-page);
   max-width: var(--card-max-width);
+  width: 100%;
   margin-inline: auto;
 }
 
@@ -147,7 +155,7 @@ body {
 
 .card {
   display: grid;
-  grid-template-areas: "thumb body arrow";
+  grid-template-areas: "logo body arrow";
   grid-template-columns: var(--thumb-w-collapsed) 1fr auto;
   align-items: center;
   gap: var(--gap-card-inner);
@@ -157,13 +165,14 @@ body {
   border-radius: var(--radius-card);
   backdrop-filter: blur(var(--blur-card));
   -webkit-backdrop-filter: blur(var(--blur-card));
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
   transition:
-    background var(--dur-glow) ease,
-    box-shadow var(--dur-glow) ease,
-    border-color var(--dur-glow) ease,
-    grid-template-columns var(--dur-state) var(--ease-card);
+    background var(--dur-glow) var(--ease-standard),
+    box-shadow var(--dur-glow) var(--ease-standard),
+    border-color var(--dur-glow) var(--ease-standard),
+    transform var(--dur-state) var(--ease-standard);
 }
 
 .card[data-expanded] {
@@ -174,36 +183,70 @@ body {
   align-items: stretch;
 }
 
+.card-logo {
+  grid-area: logo;
+  aspect-ratio: var(--thumb-ratio-collapsed);
+  width: 100%;
+  border-radius: var(--radius-thumb);
+  overflow: hidden;
+}
+
+.card[data-expanded] .card-logo {
+  display: none;
+}
+
 .card[data-glow] {
   background: var(--color-card-bg-glow);
   border-color: var(--color-card-border-glow);
   box-shadow: var(--glow-card);
+  transform: translateY(var(--card-lift));
 }
 
 .card:focus-visible {
   outline: none;
   border-color: var(--color-card-border-glow);
   box-shadow: var(--glow-card);
+  transform: translateY(var(--card-lift));
 }
 
 .card-thumb {
   grid-area: thumb;
-  aspect-ratio: 1;
+  display: none;
+  aspect-ratio: var(--thumb-ratio-expanded);
   width: 100%;
   border-radius: var(--radius-thumb);
   overflow: hidden;
 }
 
-.thumb-media {
+.card[data-expanded] .card-thumb {
+  display: block;
+}
+
+.thumb-media,
+.app-logo-media {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition:
+    transform var(--dur-state) var(--ease-standard),
+    filter var(--dur-state) var(--ease-standard),
+    opacity var(--dur-state) var(--ease-standard);
+}
+
+.card[data-glow] .thumb-media,
+.card[data-glow] .app-logo-media,
+.card:focus-visible .thumb-media,
+.card:focus-visible .app-logo-media {
+  transform: scale(var(--thumb-scale-active));
 }
 
 .card-body {
   grid-area: body;
   min-width: 0;
+  transition:
+    opacity var(--dur-state) var(--ease-standard),
+    transform var(--dur-state) var(--ease-standard);
 }
 
 .card-title {
@@ -229,6 +272,15 @@ body {
   grid-area: arrow;
   display: flex;
   color: var(--color-text-desc);
+  transition:
+    color var(--dur-glow) var(--ease-standard),
+    opacity var(--dur-glow) var(--ease-standard),
+    transform var(--dur-glow) var(--ease-standard);
+}
+
+.card:hover .card-arrow,
+.card:focus-visible .card-arrow {
+  transform: translateX(var(--arrow-shift));
 }
 
 .card[data-expanded] .card-arrow {

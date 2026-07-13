@@ -15,6 +15,12 @@ export function useActiveCard({ enabled, refs, onChange }: Options) {
 
     const pick = () => {
       raf = 0;
+      if (window.scrollY <= 1) {
+        const firstId = refs.current?.keys().next().value;
+        if (firstId) onChange(firstId);
+        return;
+      }
+
       const viewportCenter = window.innerHeight / 2;
       let bestId: string | null = null;
       let bestDist = Infinity;
