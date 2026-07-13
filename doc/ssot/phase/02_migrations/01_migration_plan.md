@@ -15,8 +15,8 @@
 |---|---|---|---|---|---|
 | personal-blog (jzahnny.leapsignal.net) | Vercel ① **중단** | **완전 SSG + 주기 재빌드** → Cloudflare 정적 자산 (+검색용 초소형 Worker) | fallback/revalidate 전환 + OG 빌드 생성 | **$0** | **1 (긴급)** |
 | ypjr (ypjr.leapsignal.net) | Vercel ① **중단** | Cloudflare 정적 자산 + 초소형 Worker (`/api/og`) | route.ts 1개 이동 | $0 | **2 (긴급)** |
-| noxionite (noxionite.vercel.app) | Vercel ① **중단** | personal-blog과 동일 방식, workers.dev 도메인 | 동일 | $0 | 3 |
-| eclipse (eclipse.leapsignal.net) | Vercel ② 작동 중 | Cloudflare 정적 자산 (완전 정적) | 0 | $0 | 4 |
+| noxionite (→ noxionite.leapsignal.net) | Vercel ① **중단** | personal-blog과 동일 방식 | 동일 | $0 | 4 |
+| eclipse (eclipse.leapsignal.net) | Vercel ① **중단** (실측 402 — 02_progress.md 정정) | Cloudflare 정적 자산 (완전 정적) | 0 | $0 | **2 (긴급, ypjr과 함께)** |
 | focus-royale/web (focusroyale.leapsignal.net) | Vercel ② 작동 중 | Cloudflare Workers + OpenNext (**무료 플랜 우선**, 10ms CPU 초과 실측 시에만 $5) | 어댑터 설정 추가 수준 | $0 → 필요시 $5 | 5 |
 
 - 총 고정비: **$0** (focus-royale/web에서 CPU 한도 초과가 실측될 때만 $5).
@@ -133,7 +133,7 @@ pages/tag/[tag].tsx:64        fallback: 'blocking'
 ### 4.3 noxionite — 데모 사이트 【우선순위 3】
 
 - personal-blog §4.1과 **완전히 같은 작업**을 upstream 저장소에 적용. 사실 순서상으로는 **엔진인 noxionite에 어댑터를 먼저 넣고, personal-blog이 upstream pull로 받는 것**이 코드 관리상 맞다 — 단, 서비스 복구 긴급도는 personal-blog이 높으므로 실행은 personal-blog 먼저, 완료 후 동일 diff를 noxionite에 반영.
-- **주소 변경 불가피**: `noxionite.vercel.app`은 Vercel 소유 도메인이라 가져올 수 없다. → `noxionite.<account>.workers.dev` 무료 도메인으로 배포하고, README·포트폴리오의 데모 링크를 갱신한다. (원하면 `noxionite.leapsignal.net` 서브도메인 부여도 가능 — 승인 시 선택)
+- **주소**: `noxionite.vercel.app`은 Vercel 소유 도메인이라 가져올 수 없다. → **`noxionite.leapsignal.net`으로 확정** (2026-07-13 사용자 결정). README·포트폴리오의 데모 링크를 새 주소로 갱신한다.
 
 ### 4.4 eclipse — eclipse.leapsignal.net 【우선순위 4, 현재 작동 중】
 
