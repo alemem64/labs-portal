@@ -2,6 +2,17 @@
 
 > 단계 번호는 [01_migration_plan.md](01_migration_plan.md) §6 기준. 최신이 아래.
 
+## 2026-07-14 — OG 이미지 폰트 깨짐 수정 + 구(舊) SocialCard 디자인 복원 ✅
+
+사용자 리포트: OG 이미지 글자가 전부 박스로 깨짐 + 커버/breadcrumb/author가 있던 예전 디자인 요청.
+
+- **깨짐 원인**: @fontsource 폰트는 유니코드 구간별 2,250개 조각 파일로 배포되는데 스크립트가 조각 1개만 로드 → 전체 글리프 TTF(@expo-google-fonts/noto-sans-kr 400/700/900)로 교체.
+- **디자인 복원**: 구 puppeteer용 `components/SocialCard.tsx`(커버 배경·breadcrumb·author·tags·날짜, 페이지 유형별 로직 내장)를 **satori로 직접 재사용**. Chromium 없이 동일 디자인.
+  - satori 호환 수정 3건: react-icons 4종 → 동일 path 인라인 SVG, `<style>` 태그 옵트아웃 prop(`disableGlobalStyles`), 하단 pill absolute 래퍼에 `display:flex`.
+  - 이미지 fetch 메모이즈(같은 아이콘/커버 반복 요청 방지) + 실패 시 투명 PNG 대체.
+- 결과: blog 556/556, noxionite 87/87 생성. 프로덕션 실측 확인(라이브 og PNG 육안 검수). 양 repo push 완료.
+- **정정 2건**: ① 검색 API는 정상이었음 — 07-13의 400은 내 테스트가 필수 파라미터 없이 직접 호출한 탓 (NOTION_TOKEN_V2 불필요). ② `_vercel` TXT 레코드는 Vercel 도메인 검증용 잔재로 방치해도 무해 — 정리는 순전히 선택.
+
 ## 2026-07-13 — 착수 전 확정 사항 (사용자 답변)
 
 - **noxionite 데모 주소**: `noxionite.leapsignal.net`으로 확정 (GitHub: https://github.com/alemem64/Noxionite).
