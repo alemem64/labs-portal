@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DEFAULT_THUMBNAIL, type ServiceCard } from "../data/services";
 import { useLocale } from "../i18n/LocaleContext";
+import { trackCardClick } from "../lib/analytics";
 import { readToken, readTokenMs } from "../lib/tokens";
 import Thumbnail from "./Thumbnail";
 
@@ -139,6 +140,7 @@ export default function Card({ card, expanded, glowing, eager, onHoverChange, re
       target="_blank"
       rel="noreferrer"
       aria-label={`${card.title[locale]} — ${t("open")}`}
+      onClick={() => trackCardClick(card.card_id)}
       onMouseEnter={onHoverChange ? () => onHoverChange(card.card_id) : undefined}
       onMouseLeave={onHoverChange ? () => onHoverChange(null) : undefined}
     >

@@ -8,16 +8,16 @@
 
 ## 1. 기술 SEO 실측 결과 — 전부 정상 ✅
 
-| 항목 | 실측값 | 판정 |
-|---|---|---|
-| robots.txt | `Allow: /` + sitemap 선언, API만 차단 | ✅ |
-| sitemap.xml | 200, 양쪽 사이트 모두 정상 도메인의 절대 URL | ✅ |
-| meta robots | `index,follow,max-image-preview:large` | ✅ |
-| canonical | 페이지별 정확한 자기 URL | ✅ |
-| X-Robots-Tag 헤더 | 없음 (noindex 없음) | ✅ |
-| OG/타이틀 | 완비 (07-14 디자인 복원 완료) | ✅ |
-| Cloudflare Bot Fight Mode | 검증된 검색봇(Googlebot/Bingbot)은 차단 대상 아님 | ✅ |
-| JSON-LD 구조화 데이터 | 없음 | ⚠️ 선택 개선 (인덱싱 차단 요인은 아님) |
+| 항목                      | 실측값                                            | 판정                                     |
+| ------------------------- | ------------------------------------------------- | ---------------------------------------- |
+| robots.txt                | `Allow: /` + sitemap 선언, API만 차단           | ✅                                       |
+| sitemap.xml               | 200, 양쪽 사이트 모두 정상 도메인의 절대 URL      | ✅                                       |
+| meta robots               | `index,follow,max-image-preview:large`          | ✅                                       |
+| canonical                 | 페이지별 정확한 자기 URL                          | ✅                                       |
+| X-Robots-Tag 헤더         | 없음 (noindex 없음)                               | ✅                                       |
+| OG/타이틀                 | 완비 (07-14 디자인 복원 완료)                     | ✅                                       |
+| Cloudflare Bot Fight Mode | 검증된 검색봇(Googlebot/Bingbot)은 차단 대상 아님 | ✅                                       |
+| JSON-LD 구조화 데이터     | 없음                                              | ⚠️ 선택 개선 (인덱싱 차단 요인은 아님) |
 
 ## 2. 실제 문제 — 인덱스 부재의 3가지 원인
 

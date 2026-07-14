@@ -9,6 +9,7 @@ import { useIsDesktop } from "./hooks/useIsDesktop";
 import { useHashTarget } from "./hooks/useHashTarget";
 import { useActiveCard } from "./hooks/useActiveCard";
 import { runIntroSequence, prefersReducedMotion } from "./lib/introSequence";
+import { trackPageview } from "./lib/analytics";
 
 const cardIds = services.map((s) => s.card_id);
 const PULSE_MS = 1600; // 데스크톱 해시 진입 glow 점등 시간 (Contract 04)
@@ -16,6 +17,14 @@ const PULSE_MS = 1600; // 데스크톱 해시 진입 glow 점등 시간 (Contrac
 export default function App() {
   const isDesktop = useIsDesktop();
   const hashTarget = useHashTarget(cardIds);
+
+  // 방문 분석: 페이지 로드당 1회 (StrictMode 이중 실행 가드)
+  const pageviewSent = useRef(false);
+  useEffect(() => {
+    if (pageviewSent.current) return;
+    pageviewSent.current = true;
+    trackPageview();
+  }, []);
 
   const cardRefs = useRef(new Map<string, HTMLElement>());
   const [cardVideos, setCardVideos] = useState<Map<string, HTMLVideoElement>>(() => new Map());

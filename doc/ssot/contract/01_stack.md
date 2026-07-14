@@ -22,8 +22,11 @@
 ## 빌드·산출물
 
 - `npm run build` = `tsc --noEmit`(타입 게이트) + `vite build` → `dist/` (MUST).
-- `wrangler.jsonc`는 `assets.directory = ./dist`만 갖는다. Worker 스크립트(`main`) 추가 금지 (MUST) — 추가하는 순간 정적 무료 서빙 전제가 깨진다.
-- `run_worker_first` 사용 금지 (MUST).
+- Worker 스크립트(`main`)는 **`/api/*` 경로 처리에 한정**해 허용한다 (2026-07-14 개정 — 방문 분석 수집용).
+  - 정적 자산이 존재하는 경로는 Worker를 거치지 않고 서빙되는 기본 동작을 유지해야 한다 (MUST) — 원 계약의 취지(정적 무료 서빙, 봇 비용 0)는 불변.
+  - `run_worker_first` 사용 금지 (MUST).
+  - Worker가 페이지 HTML을 생성/변조하는 것 금지 (MUST) — 렌더링은 여전히 100% 정적.
+- 방문 분석(Contract 예외 승인 근거): [phase/03_analytics](../phase/03_analytics/00_options.md). 수집은 쿠키 없이, D1 무료 한도 내에서만 (MUST).
 
 ## 저장소
 
