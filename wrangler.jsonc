@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "leapsignal-analytics",
-      "database_id": "REPLACE_AFTER_D1_CREATE"
+      "database_id": "deeedcb9-ee35-406a-b705-8ed9100fdf8d"
     }
   ],
   "routes": [
