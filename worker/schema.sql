@@ -1,5 +1,5 @@
 -- 방문 분석 이벤트 (phase/03_analytics)
--- 적용: wrangler d1 execute leapsignal-analytics --remote --file worker/schema.sql
+-- 적용: npm run d1:schema (scripts/apply-d1-schema.sh, 로컬 실행)
 CREATE TABLE IF NOT EXISTS events (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   ts TEXT NOT NULL,             -- ISO8601 UTC

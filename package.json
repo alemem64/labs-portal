@@ -9,7 +9,8 @@
     "build": "npm run typecheck && vite build",
     "preview": "vite preview",
     "cloudflare:allow-og-scanner": "node scripts/allow-og-scanner-ips.mjs",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "d1:schema": "bash scripts/apply-d1-schema.sh"
   },
   "dependencies": {
     "react": "^18.3.1",
