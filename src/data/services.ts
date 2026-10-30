@@ -46,6 +46,16 @@ function serviceAssets(cardId: string, localFallback: string): Pick<ServiceCard,
 
 export const services: ServiceCard[] = [
   {
+    card_id: "naesinorbit",
+    title: { ko: "내신궤도", en: "Naesin Orbit" },
+    desc: {
+      ko: "내신 공부의 모든 것을 담은 완벽한 인강 커리큘럼",
+      en: "A complete online lecture curriculum covering everything about school exam prep.",
+    },
+    link: "https://naesinorbit.leapsignal.net",
+    ...serviceAssets("naesinorbit", "/thumbs/naesinorbit.svg"),
+  },
+  {
     card_id: "ypjr",
     title: { ko: "연필자루책", en: "Yeonpiljaru Books" },
     desc: {

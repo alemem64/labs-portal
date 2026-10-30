@@ -30,10 +30,11 @@ export type ServiceCard = {
 
 | # | card_id | link |
 |---|---|---|
-| 1 | `ypjr` | https://ypjr.leapsignal.net |
-| 2 | `jzahnny` | https://jzahnny.leapsignal.net |
+| 1 | `naesinorbit` | https://naesinorbit.leapsignal.net |
+| 2 | `ypjr` | https://ypjr.leapsignal.net |
 | 3 | `eclipse` | https://eclipse.leapsignal.net/ |
 | 4 | `focusroyale` | https://focusroyale.leapsignal.net |
+| 5 | `jzahnny` | https://jzahnny.leapsignal.net |
 
 ## 파생 데이터
 
